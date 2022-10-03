@@ -149,7 +149,11 @@ public class BSImagePicker extends BottomSheetDialogFragment implements LoaderMa
         if (Utils.isReadStorageGranted(getContext())) {
             LoaderManager.getInstance(this).initLoader(LOADER_ID, null, BSImagePicker.this);
         } else {
-            Utils.checkPermission(BSImagePicker.this, Manifest.permission.READ_EXTERNAL_STORAGE, PERMISSION_READ_STORAGE);
+            String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                permission = Manifest.permission.READ_MEDIA_IMAGES;
+            }
+            Utils.checkPermission(BSImagePicker.this, permission, PERMISSION_READ_STORAGE);
         }
         if (savedInstanceState != null) {
             currentPhotoUri = savedInstanceState.getParcelable("currentPhotoUri");
